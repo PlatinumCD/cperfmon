@@ -1,25 +1,31 @@
 Rewritten PerfMon Library
 =========================
 
-This code demonstrates a reorganized approach for the CPU performance monitor,
-inspired by large-scale software design principles. It uses a config-based
-approach instead of preprocessor directives to manage extended field parsing,
-publishing to Waggle, or custom data harvesting intervals.
+Overview
+--------
+This document outlines the restructured approach for the CPU Performance Monitor, drawing inspiration from principles of large-scale software design. The library now employs a configuration-based methodology, replacing preprocessor directives to facilitate extended field parsing, data publishing to Waggle, and custom data harvesting intervals.
 
-Build and Run:
---------------
+Build and Execution
+-------------------
+To build and run the application, execute the following commands:
+
+```
 make
 ./perfmon
+```
 
-Optional Env Variables:
------------------------
-PERFMON_ENABLE_ALL_FIELDS=1
-PERFMON_PUBLISH_DATA=1
-PERFMON_NUMBER_SAMPLES=200
-PERFMON_SAMPLE_INTERVAL=0.1
-PERFMON_SIN_DATA_COLLECT=1
+Configuration via Environment Variables
+---------------------------------------
+The behavior of the PerfMon library can be customized using the following optional environment variables:
 
-Note: The environment variables `PERFMON_SIN_DATA_COLLECT` and `PERFMON_SAMPLE_INTERVAL` cannot both be used simultaneously. `PERFMON_SIN_DATA_COLLECT` is intended for enabling sine wave data collection, which operates on a fixed interval, while `PERFMON_SAMPLE_INTERVAL` specifies a custom sampling interval for data collection. Using both may lead to conflicts in data collection timing and behavior, as they are designed for different operational modes.
+- `PERFMON_ENABLE_ALL_FIELDS=1`: Enables all available fields for monitoring.
+- `PERFMON_PUBLISH_DATA=1`: Activates data publishing to Waggle.
+- `PERFMON_NUMBER_SAMPLES=200`: Sets the number of samples to collect.
+- `PERFMON_SAMPLE_INTERVAL=0.1`: Specifies the interval between samples in seconds.
+- `PERFMON_SIN_DATA_COLLECT=1`: Enables sine wave data collection.
 
-These environment variables control the extended fields, plugin publishing, 
-and advanced data-harvest logic respectively.
+Important Note
+--------------
+The environment variables `PERFMON_SIN_DATA_COLLECT` and `PERFMON_SAMPLE_INTERVAL` are mutually exclusive. `PERFMON_SIN_DATA_COLLECT` is designed for sine wave data collection, which operates on a fixed interval. In contrast, `PERFMON_SAMPLE_INTERVAL` allows for a custom sampling interval. Using both simultaneously may result in conflicts in data collection timing and behavior, as they cater to different operational modes.
+
+These environment variables provide control over extended fields, plugin publishing, and advanced data-harvesting logic.
