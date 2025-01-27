@@ -29,17 +29,13 @@ MonitorConfig load_monitor_config(void) {
         config.numSamples = 100;
     }
 
-    if (getenv("PERFMON_CUSTOM_DATA_COLLECT") && getenv("PERFMON_SAMPLE_INTERVAL")) {
-        // Handle error: both cannot be specified at the same time
-        fprintf(stderr, "Error: PERFMON_CUSTOM_DATA_COLLECT and PERFMON_SAMPLE_INTERVAL cannot be specified at the same time.\n");
-        exit(EXIT_FAILURE);
-    }
-
     if (getenv("PERFMON_CUSTOM_DATA_COLLECT")) {
         if (strcmp(getenv("PERFMON_CUSTOM_DATA_COLLECT"), "1") == 0) {
             config.customDataCollect = 1;
         }
-    } else if (getenv("PERFMON_SAMPLE_INTERVAL")) {
+    } 
+
+    if (getenv("PERFMON_SAMPLE_INTERVAL")) {
         char *endptr;
         float sampleInterval = strtof(getenv("PERFMON_SAMPLE_INTERVAL"), &endptr);
         if (*endptr == '\0') {

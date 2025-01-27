@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <math.h>
 
-uint64_t get_sampling_interval(const MonitorConfig *config, int iteration) {
+uint64_t get_sampling_interval(MonitorConfig *config, int iteration) {
     if (config->customDataCollect) {
 
         if (iteration == 8) {
