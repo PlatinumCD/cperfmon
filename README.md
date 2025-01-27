@@ -26,6 +26,6 @@ The behavior of the C-PerfMon library can be customized using the following opti
 
 Important Note
 --------------
-The environment variables `PERFMON_CUSTOM_DATA_COLLECT` and `PERFMON_SAMPLE_INTERVAL` are mutually exclusive. `PERFMON_CUSTOM_DATA_COLLECT` is designed for custom data collection, which operates on a user programmed interval. In contrast, `PERFMON_SAMPLE_INTERVAL` allows for a custom fix sampling interval. Using both simultaneously may result in conflicts in data collection timing and behavior, as they cater to different operational modes.
+`PERFMON_CUSTOM_DATA_COLLECT` is designed for custom data collection, which operates on a user programmed interval. In contrast, `PERFMON_SAMPLE_INTERVAL` allows for a custom fix sampling interval. Using both simultaneously may result in conflicts in data collection timing and behavior, as they cater to different operational modes.
 
 These environment variables provide control over extended fields, plugin publishing, and advanced data-collecting logic.
