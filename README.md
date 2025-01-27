@@ -23,6 +23,7 @@ The behavior of the C-PerfMon library can be customized using the following opti
 - `PERFMON_NUMBER_SAMPLES=200`: Sets the number of samples to collect.
 - `PERFMON_SAMPLE_INTERVAL=0.1`: Specifies the interval between samples in seconds.
 - `PERFMON_CUSTOM_DATA_COLLECT=1`: Enables custom data collection method.
+- `PERFMON_ONLY_COLLECT_AGGREGATE=1`: Only collects data from aggregate CPU values.
 
 Important Note
 --------------

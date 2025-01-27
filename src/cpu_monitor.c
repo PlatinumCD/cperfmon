@@ -13,11 +13,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-static CpuFrame *prev_frames = NULL;
-static int       proc_stat_fd = -1;
-static int       num_cpus     = 0;
-static CpuOutput *output      = NULL;
-static int       enable_all   = 0;
+static CpuFrame  *prev_frames    = NULL;
+static int        proc_stat_fd   = -1;
+static int        num_cpus       = 0;
+static CpuOutput *output         = NULL;
+static int        enable_all     = 0;
+static int        only_aggregate = 0;
 
 #define BUFSZ 8192
 
@@ -35,14 +36,27 @@ static void determine_num_cpus(void);
 // --------------------------------------------------------------------------
 void init_cpu_monitor(const MonitorConfig *config) {
     enable_all = config->enableAllFields;
-    determine_num_cpus();
+    only_aggregate = config->onlyCollectAggregate;
+
+    // Detemine whether we only collect aggregate CPU usage or collect data across all cores
+    if (only_aggregate) {
+        num_cpus = 0;
+    } else {
+        determine_num_cpus();
+    }
+
+    // Open /proc/stat
     open_proc_stat();
 
     // Allocate space for previous frames (including an extra for aggregate CPU)
-    prev_frames = (CpuFrame *)calloc(num_cpus + 1, sizeof(CpuFrame));
-    if (!prev_frames) {
-        perror("calloc for prev_frames");
-        exit(EXIT_FAILURE);
+    if (only_aggregate) {
+        prev_frames = (CpuFrame *)calloc(1, sizeof(CpuFrame));
+    } else {
+        prev_frames = (CpuFrame *)calloc(num_cpus + 1, sizeof(CpuFrame));
+        if (!prev_frames) {
+            perror("calloc for prev_frames");
+            exit(EXIT_FAILURE);
+        }
     }
 
     // We create an output object (CSV or Plugin) based on publishData
@@ -53,6 +67,7 @@ void init_cpu_monitor(const MonitorConfig *config) {
         extern CpuOutput *create_csv_output(int);
         output = create_csv_output(enable_all);
     }
+
     output->init(output);
 }
 

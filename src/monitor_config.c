@@ -46,6 +46,14 @@ MonitorConfig load_monitor_config(void) {
     }
 
 
+    if (getenv("PERFMON_ONLY_COLLECT_AGGREGATE")) {
+        if (strcmp(getenv("PERFMON_ONLY_COLLECT_AGGREGATE"), "1") == 0) {
+            config.onlyCollectAggregate = 1;
+        }
+    } 
+
+
+
     return config;
 }
 
