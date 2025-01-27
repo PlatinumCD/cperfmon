@@ -17,6 +17,8 @@ int main(void) {
         uint64_t interval = get_sampling_interval(&config, i);
         sample_cpu_data(timestep, interval);
         usleep(interval);
+
+
         timestep++;
     }
 

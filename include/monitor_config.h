@@ -4,7 +4,7 @@
 typedef struct {
     int enableAllFields;   // if non-zero, parse and compute extended fields
     int publishData;       // if non-zero, publish via Waggle plugin
-    int sinDataCollect;       // if non-zero, use a fancy approach to sampling interval
+    int customDataCollect; // if non-zero, use a fancy approach to sampling interval
     int numSamples;
     float sampleInterval; // base sampling interval for standard mode
 } MonitorConfig;
@@ -15,5 +15,6 @@ typedef struct {
  * sampleInterval can be set to any float you desire as a base rate.
  */
 MonitorConfig load_monitor_config(void);
+void update_sampling_interval(MonitorConfig*, float);
 
 #endif // MONITOR_CONFIG_H
