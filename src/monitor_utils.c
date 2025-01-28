@@ -4,11 +4,9 @@
 
 uint64_t get_sampling_interval(MonitorConfig *config, int iteration) {
     if (config->customDataCollect) {
-
         if (iteration == config->numSamples - 1) {
-            printf("%d %f\n", iteration, config->sampleInterval);
-            if (config->sampleInterval < 0.000977) {
-                    return 1000000.0;
+            if (config->sampleInterval < 0.0625) {
+                return 1000000.0;
             }
 
             config->numSamples = config->numSamples * 2;

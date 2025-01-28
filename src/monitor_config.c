@@ -52,8 +52,6 @@ MonitorConfig load_monitor_config(void) {
         }
     } 
 
-
-
     return config;
 }
 
