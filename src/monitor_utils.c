@@ -5,10 +5,17 @@
 uint64_t get_sampling_interval(MonitorConfig *config, int iteration) {
     if (config->customDataCollect) {
 
-        // Example
-        double val = (double)iteration / (double)iteration;
+        if (iteration == config->numSamples - 1) {
+            printf("%d %f\n", iteration, config->sampleInterval);
+            if (config->sampleInterval < 0.000977) {
+                    return 1000000.0;
+            }
 
-        return (uint64_t)(val * 1000000.0);
+            config->numSamples = config->numSamples * 2;
+            config->sampleInterval = config->sampleInterval / 2;
+        }
+
+        return (uint64_t)(config->sampleInterval * 1000000.0);
     } else {
         // Straight multiply the sampleInterval by 1e6 for microseconds
         return (uint64_t)(config->sampleInterval * 1000000.0);
