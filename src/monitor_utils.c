@@ -1,15 +1,17 @@
 #include "monitor_utils.h"
 #include <stdint.h>
+#include <math.h>
 
-static int round = 1;
+static int round_count = 1;
 
 uint64_t get_sampling_interval_by_time(MonitorConfig *config, double sec_elapsed) {
     if (config->customDataCollect) {
         // Add custom rules here
 
-        if (sec_elapsed > 5 * round) {
-            config->sampleInterval /= 2;
-            round += 1;
+        if (sec_elapsed > 3600 * round_count) {
+            round_count += 1;
+            config->sampleInterval = exp((double)(round_count) / -2.0) * 4.0;
+    	    return (uint64_t)(10 * 1000000.0);
         }
     }
 
