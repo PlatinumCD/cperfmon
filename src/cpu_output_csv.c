@@ -15,8 +15,6 @@ static void csv_init(CpuOutput *self) {
         perror("fopen: cpu_stats.csv");
         exit(EXIT_FAILURE);
     }
-    // Write CSV header (includes all fields)
-    
     if (enable_all) {
         fprintf(d->csv_file, "cpu_id,timestep,sampling_interval,user,nice,system,idle,iowait,irq,softirq,steal,guest,guest_nice\n");
     } else {

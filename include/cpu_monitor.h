@@ -13,7 +13,7 @@ void init_cpu_monitor(const MonitorConfig *config);
 
 /**
  * Reads /proc/stat, parses CPU lines, computes usage frames,
- * and sends them to the chosen output. 
+ * and sends them to the chosen output.
  */
 void sample_cpu_data(uint64_t timestep, uint64_t sampling_interval);
 

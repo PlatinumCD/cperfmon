@@ -12,22 +12,7 @@ CpuUsageFrame parse_cpu_frame(const char *line,
     CpuFrame cur_frame;
     memset(&cur_frame, 0, sizeof(cur_frame));
 
-    // We parse everything first.
-    // If enable_all_fields is not set, we'll only use user/system/idle.
-    // We'll attempt to read 10 counters after the 'cpuX' label:
-    // user, nice, system, idle, iowait, irq, softirq, steal, guest, guest_nice.
-    // For lines that only have user, system, idle, it should still work, but
-    // the missing ones remain 0.
-
-    // Example /proc/stat lines:
-    //   cpu  2255 34 2290 226255 629 127 456 0 0 0
-    //   cpu0 1132 34 1441 113117 315 63 231 0 0 0
-    // If the line doesn't have enough fields, they'll remain 0.
-
     unsigned long long u=0, n=0, s=0, i=0, io=0, ir=0, so=0, st=0, g=0, gn=0;
-    // We'll read them all, ignoring the label part:
-    // We do not rely on exact "cpu0" or "cpu" strings, just skip first token.
-    // Some lines might be "cpu" aggregate or "cpu0", etc.
     {
         char dummy[16];
         int scanned = sscanf(line,
@@ -36,7 +21,6 @@ CpuUsageFrame parse_cpu_frame(const char *line,
         );
         if (scanned < 4) {
             // We failed to read the minimum user/system/idle
-            // We'll just set them all to zero.
         }
     }
 
@@ -58,13 +42,11 @@ CpuUsageFrame parse_cpu_frame(const char *line,
     usage_frame.timestep          = timestep;
     usage_frame.sampling_interval = sampling_interval;
 
-    // If it's the first read (timestep == 0), we store current counters and return zeros.
     if (timestep == 0) {
         *prev_frame = cur_frame;
         return usage_frame;
     }
 
-    // Compute diffs
     unsigned long long user_diff   = cur_frame.user       - prev_frame->user;
     unsigned long long nice_diff   = cur_frame.nice       - prev_frame->nice;
     unsigned long long sys_diff    = cur_frame.system     - prev_frame->system;
@@ -82,11 +64,9 @@ CpuUsageFrame parse_cpu_frame(const char *line,
         soft_diff + steal_diff + guest_diff + gnice_diff;
 
     if (total_diff > 0) {
-        // Always compute user/system/idle usage
         usage_frame.user   = (uint8_t)((user_diff   * 100) / total_diff);
         usage_frame.system = (uint8_t)((sys_diff    * 100) / total_diff);
         usage_frame.idle   = (uint8_t)((idle_diff   * 100) / total_diff);
-        // Only fill the other fields if enable_all_fields is set
         if (enable_all_fields) {
             usage_frame.nice   = (uint8_t)((nice_diff   * 100) / total_diff);
             usage_frame.iowait = (uint8_t)((iowait_diff * 100) / total_diff);
@@ -98,8 +78,6 @@ CpuUsageFrame parse_cpu_frame(const char *line,
         }
     }
 
-    // Update prev_frame for next iteration
     *prev_frame = cur_frame;
-
     return usage_frame;
 }

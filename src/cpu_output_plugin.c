@@ -14,7 +14,6 @@ typedef struct {
 static void plugin_init(CpuOutput *self) {
     PluginOutputData *d = (PluginOutputData *)self->data;
 
-    // Retrieve environment with defaults
     const char *username = getenv("WAGGLE_PLUGIN_USERNAME");
     if (!username) username = "plugin";
 
@@ -50,13 +49,7 @@ static void plugin_write_frame(CpuOutput *self, const CpuUsageFrame *frame) {
     }
 
     int enable_all = self->enable_all;
-
     uint64_t timestamp = waggle_get_timestamp_ns();
-
-    // Publish fields. We always publish all, but if they're zero because
-    // extended fields are disabled, they'll show as zero.
-    // We'll generate topic names depending on cpu_id.
-    // "perf.cpuX.user" for example.
 
     if (enable_all) {
         const char *fields[] = {
@@ -95,7 +88,6 @@ static void plugin_write_frame(CpuOutput *self, const CpuUsageFrame *frame) {
 }
 
 static void plugin_flush(CpuOutput *self) {
-    // Not much to do here for the plugin approach
     (void)self;
 }
 
