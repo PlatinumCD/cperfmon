@@ -52,8 +52,7 @@ static void plugin_write_frame(CpuOutput *self, const CpuUsageFrame *frame) {
     uint64_t timestamp = waggle_get_timestamp_ns();
 
     char metadata[64];
-    snprintf(metadata, sizeof(metadata), "{\"si\": \"%" PRIu64 "\"}", frame->sampling_interval);
-    printf("Cameron: %s", metadata);
+    snprintf(metadata, sizeof(metadata), "{\"si\": %" PRIu64 "}", frame->sampling_interval);
 
     if (enable_all) {
         const char *fields[] = {
