@@ -8,7 +8,7 @@ uint64_t get_sampling_interval_by_time(MonitorConfig *config, double sec_elapsed
     if (config->customDataCollect) {
         // Add custom rules here
 
-#        if (sec_elapsed > 3600 * round_count) {
+//        if (sec_elapsed > 3600 * round_count) {
         if (sec_elapsed > 20 * round_count) {
             round_count += 1;
             config->sampleInterval = exp((double)(round_count) / -5.0) * 4.0;
